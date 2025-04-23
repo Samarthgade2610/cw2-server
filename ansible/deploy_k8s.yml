@@ -20,6 +20,11 @@
         - ebtables
         - iptables
         - docker.io
+    - name: Install crictl (cri-tools)
+      apt:
+        name: cri-tools
+        state: present
+        update_cache: yes
 
     - name: Start and enable Docker service
       service:
@@ -49,7 +54,7 @@
 
     - name: Start Minikube
       shell: |
-        minikube start --driver=none --force
+        minikube start --driver=none --cpus=1 --force
       environment:
         CHANGE_MINIKUBE_NONE_USER: "true"
         USER: root
