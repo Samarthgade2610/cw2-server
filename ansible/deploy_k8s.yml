@@ -1,0 +1,63 @@
+---
+- name: Setup Kubernetes & Deploy Node.js App
+  hosts: production
+  become: yes
+
+  vars:
+    docker_package: docker.io
+
+  tasks:
+    - name: Install required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - curl
+        - apt-transport-https
+        - ca-certificates
+        - software-properties-common
+        - conntrack
+        - socat
+        - ebtables
+        - iptables
+        - "{{ docker_package }}"
+
+    - name: Install kubectl
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      args:
+        creates: /usr/local/bin/kubectl
+
+    - name: Install Minikube
+      shell: |
+        curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        install minikube /usr/local/bin/
+      args:
+        creates: /usr/local/bin/minikube
+
+    - name: Start Minikube
+      shell: |
+        minikube start --driver=docker
+      environment:
+        CHANGE_MINIKUBE_NONE_USER: "true"
+        USER: root
+
+    - name: Copy Kubernetes YAMLs to server
+      copy:
+        src: ../k8s/
+        dest: /home/ubuntu/k8s/
+        mode: 0755
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Apply Kubernetes Deployment
+      shell: kubectl apply -f /home/ubuntu/k8s/deployment.yaml
+      environment:
+        KUBECONFIG: /root/.kube/config
+
+    - name: Apply Kubernetes Service
+      shell: kubectl apply -f /home/ubuntu/k8s/service.yaml
+      environment:
+        KUBECONFIG: /root/.kube/config
