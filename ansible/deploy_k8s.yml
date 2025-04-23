@@ -49,7 +49,7 @@
 
     - name: Start Minikube
       shell: |
-        minikube start --driver=docker
+        minikube start --driver=docker --cpus=2 --memory=2048mb
       environment:
         CHANGE_MINIKUBE_NONE_USER: "true"
         USER: root
