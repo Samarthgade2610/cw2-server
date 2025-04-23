@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: devops-server
-          image: SamarthUK/cw2-server:v0
+          image: samarthuk/cw2-server:v0
           ports:
             - containerPort: 8080
           readinessProbe:
