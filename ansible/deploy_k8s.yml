@@ -20,11 +20,22 @@
         - ebtables
         - iptables
         - docker.io
-    - name: Install crictl (cri-tools)
-      apt:
-        name: cri-tools
-        state: present
-        update_cache: yes
+    - name: Download crictl tarball
+        get_url:
+          url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.30.0/crictl-v1.30.0-linux-amd64.tar.gz
+          dest: /tmp/crictl.tar.gz
+      
+      - name: Extract crictl binary
+        unarchive:
+          src: /tmp/crictl.tar.gz
+          dest: /usr/local/bin/
+          remote_src: yes
+          mode: '0755'
+      
+      - name: Rename crictl binary
+        command: mv /usr/local/bin/crictl /usr/local/bin/crictl
+        args:
+          creates: /usr/local/bin/crictl
 
     - name: Start and enable Docker service
       service:
