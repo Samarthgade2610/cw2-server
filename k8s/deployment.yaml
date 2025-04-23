@@ -13,14 +13,14 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: devops-server
+      app: cw2-server
   template:
     metadata:
       labels:
-        app: devops-server
+        app: cw2-server
     spec:
       containers:
-        - name: devops-server
+        - name: cw2-server
           image: samarthuk/cw2-server:v0
           ports:
             - containerPort: 8081
