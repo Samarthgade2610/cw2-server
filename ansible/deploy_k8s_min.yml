@@ -1,0 +1,56 @@
+---
+- name: Setup Kubernetes & Deploy Node.js App
+  hosts: production
+  become: yes
+
+  tasks:    
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Start Minikube
+      shell: |
+        minikube start --driver=docker --memory=2g --cpus=2
+      environment:
+        CHANGE_MINIKUBE_NONE_USER: "true"
+        USER: root
+
+    - name: Wait for Minikube to be ready
+      shell: |
+        until kubectl get nodes; do sleep 5; done
+      environment:
+        KUBECONFIG: /root/.kube/config
+
+    - name: Create k8s directory
+      file:
+        path: /home/ubuntu/k8s
+        state: directory
+        mode: '0755'
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Copy Kubernetes YAML files
+      copy:
+        src: ../k8s/
+        dest: /home/ubuntu/k8s/
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+
+    - name: Apply Kubernetes Deployment
+      shell: kubectl apply -f /home/ubuntu/k8s/deployment.yaml
+      environment:
+        KUBECONFIG: /root/.kube/config
+
+    - name: Apply Kubernetes Service
+      shell: kubectl apply -f /home/ubuntu/k8s/service.yaml
+      environment:
+        KUBECONFIG: /root/.kube/config
