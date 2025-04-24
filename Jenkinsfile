@@ -60,7 +60,9 @@ pipeline {
                         // SSH into the production server and deploy using kubectl
                         sh '''
                             ssh -i $KEY -o StrictHostKeyChecking=no $USER@${PROD_HOST} \
-                            "sudo kubectl apply -f ${REMOTE_K8S_DIR}/deployment.yaml && sudo kubectl apply -f ${REMOTE_K8S_DIR}/service.yaml"
+                            "sudo kubectl apply -f ${REMOTE_K8S_DIR}/deployment.yaml && \
+                             sudo kubectl apply -f ${REMOTE_K8S_DIR}/service.yaml && \
+                             sudo kubectl rollout restart deployment cw2-deployment"
                         '''
                     }
                 }
