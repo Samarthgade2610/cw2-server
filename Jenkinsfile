@@ -6,7 +6,7 @@ pipeline {
         IMAGE_TAG = 'v0'
         PROD_USER = 'ubuntu' // Production server username
         PROD_HOST = '3.83.221.72' // Replace with your production server IP
-        REMOTE_K8S_DIR = '/home/ubuntu/cw2-server/k8s' // Path on production server for Kubernetes YAMLs
+        REMOTE_K8S_DIR = '/home/ubuntu/k8s' // Path on production server for Kubernetes YAMLs
     }
 
     stages {
