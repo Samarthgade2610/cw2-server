@@ -50,19 +50,19 @@
         groups: docker
         append: yes
 
-#    - name: Install kubectl
-#      shell: |
-#        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-#        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-#      args:
-#        creates: /usr/local/bin/kubectl
+    - name: Install kubectl
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      args:
+        creates: /usr/local/bin/kubectl
 
-#    - name: Install Minikube
-#      shell: |
-#       curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-#        install minikube /usr/local/bin/
-#      args:
-#        creates: /usr/local/bin/minikube
+    - name: Install Minikube
+      shell: |
+       curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        install minikube /usr/local/bin/
+      args:
+        creates: /usr/local/bin/minikube
 
     - name: Start Minikube
       shell: |
