@@ -3,22 +3,17 @@
   hosts: production
   become: yes
 
-  tasks:    
+  tasks:
+
     - name: Start and enable Docker service
       service:
         name: docker
         state: started
         enabled: yes
 
-    - name: Add ubuntu user to docker group
-      user:
-        name: ubuntu
-        groups: docker
-        append: yes
-
     - name: Start Minikube
       shell: |
-        minikube start --driver=docker --memory=2g --cpus=2
+        minikube start --driver=none --memory=2g --cpus=2 --force
       environment:
         CHANGE_MINIKUBE_NONE_USER: "true"
         USER: root
