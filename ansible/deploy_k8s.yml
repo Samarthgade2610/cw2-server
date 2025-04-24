@@ -5,38 +5,38 @@
 
   tasks:
 
-#    - name: Update apt cache and install dependencies
-#      apt:
-#        name: "{{ item }}"
-#        state: present
-#        update_cache: yes
-#      loop:
-#        - curl
-#        - apt-transport-https
-#        - ca-certificates
-#        - software-properties-common
-#        - conntrack
-#        - socat
-#        - ebtables
-#        - iptables
-#        - docker.io
+    - name: Update apt cache and install dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - curl
+        - apt-transport-https
+        - ca-certificates
+        - software-properties-common
+        - conntrack
+        - socat
+        - ebtables
+        - iptables
+        - docker.io
 
-#    - name: Download crictl tarball
-#      get_url:
-#        url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.30.0/crictl-v1.30.0-linux-amd64.tar.gz
-#        dest: /tmp/crictl.tar.gz
+    - name: Download crictl tarball
+      get_url:
+        url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.30.0/crictl-v1.30.0-linux-amd64.tar.gz
+        dest: /tmp/crictl.tar.gz
 
-#    - name: Extract crictl binary
-#      unarchive:
-#        src: /tmp/crictl.tar.gz
-#        dest: /usr/local/bin/
-#        remote_src: yes
-#        mode: '0755'
+    - name: Extract crictl binary
+      unarchive:
+        src: /tmp/crictl.tar.gz
+        dest: /usr/local/bin/
+        remote_src: yes
+        mode: '0755'
 
-#    - name: Rename crictl binary
-#      command: mv /usr/local/bin/crictl /usr/local/bin/crictl
-#      args:
-#        creates: /usr/local/bin/crictl
+    - name: Rename crictl binary
+      command: mv /usr/local/bin/crictl /usr/local/bin/crictl
+      args:
+        creates: /usr/local/bin/crictl
 
     - name: Start and enable Docker service
       service:
@@ -50,19 +50,19 @@
         groups: docker
         append: yes
 
-#    - name: Install kubectl
-#      shell: |
-#        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-#        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-#      args:
-#        creates: /usr/local/bin/kubectl
+    - name: Install kubectl
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      args:
+        creates: /usr/local/bin/kubectl
 
-#    - name: Install Minikube
-#      shell: |
-#       curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-#        install minikube /usr/local/bin/
-#      args:
-#        creates: /usr/local/bin/minikube
+    - name: Install Minikube
+      shell: |
+       curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        install minikube /usr/local/bin/
+      args:
+        creates: /usr/local/bin/minikube
 
     - name: Start Minikube
       shell: |
