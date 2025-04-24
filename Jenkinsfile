@@ -40,8 +40,8 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG')]) {
                     sh '''
-                        kubectl apply -f k8s/deployment.yaml
-                        kubectl apply -f k8s/service.yaml
+                        sudo KUBECONFIG=$KUBECONFIG kubectl apply -f k8s/deployment.yaml
+                        sudo KUBECONFIG=$KUBECONFIG kubectl apply -f k8s/service.yaml
                     '''
                 }
             }
