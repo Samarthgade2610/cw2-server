@@ -9,7 +9,7 @@ var handleRequest = function (request, response) {
   response.writeHead(200);
   response.write("DevOps Coursework 2! | Running on: ");
   response.write(host);
-  response.end(" | v=7\n");
+  response.end(" | v=8\n");
   console.log(
     "Running On:",
     host,
